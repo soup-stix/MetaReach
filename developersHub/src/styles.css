@@ -1,0 +1,9 @@
+
+ a:link {
+    color: white;
+    background-color: transparent;
+}
+
+:host ::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
+    color:green;
+}

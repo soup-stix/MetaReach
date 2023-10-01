@@ -1,0 +1,291 @@
+<div class="w3-container">
+  <div class="w3-panel w3-card-2 w3-round-large w3-metro-darken w3-padding">
+    <div class="w3-center w3-third w3-padding w3-metro-darken">
+      <img
+        src="{{ userData.avatar_url }}"
+        height="100%"
+        width="100%"
+        alt="profile"
+        style="border-radius: 50% !important; max-width: 250px !important"
+      />
+      <br /><br />
+      <button
+        mat-raised-button
+        class="w3-margin-top"
+        color="primary"
+        (click)="open()"
+      >
+        Edit details
+      </button>
+    </div>
+    <div
+      class="w3-container w3-left w3-twothird w3-round w3-padding w3-win8-magenta"
+      style="box-shadow: inset 0 0 30px #311b0b; height: 100% !important"
+    >
+      <h1 class="w3-title">{{ userData.name }}</h1>
+      <a class="w3-text-white w3-hover-black" href="{{ userData.html_url }}"
+        ><small>{{ userData.login }}</small></a
+      >
+      <p>{{ userData.bio }}</p>
+      <br /><br /><br /><br /><br /><br />
+      <p>
+        <a
+          *ngIf="allData.github"
+          class="w3-hover-shadow"
+          style="margin-right: 10px !important"
+          href="{{ userData.html_url }}"
+          ><img src="./assets/portfolio/github.png" width="25" alt="github"
+        /></a>
+        <a
+          *ngIf="allData.linkedin"
+          class="w3-hover-shadow"
+          style="margin-right: 10px !important"
+          href="{{ allData.linkedin }}"
+          ><img src="./assets/social/linkedin.png" width="25" alt="github"
+        /></a>
+        <a
+          *ngIf="allData.behance"
+          class="w3-hover-shadow"
+          style="margin-right: 10px !important"
+          ><img src="./assets/portfolio/behance.png" width="25" alt="github"
+        /></a>
+        <a
+          *ngIf="allData.dribble"
+          class="w3-hover-shadow"
+          style="margin-right: 10px !important"
+          ><img src="./assets/portfolio/dribble.png" width="25" alt="github"
+        /></a>
+        <a
+          *ngIf="allData.gmail"
+          class="w3-hover-shadow"
+          style="margin-right: 10px !important"
+          [href]="'mailto:' + allData.gmail"
+          ><img src="./assets/social/gmail.png" width="25" alt="github"
+        /></a>
+        <a
+          *ngIf="allData.facebook"
+          class="w3-hover-shadow"
+          style="margin-right: 10px !important"
+          href="{{ allData.facebook }}"
+          ><img src="./assets/social/facebook.png" width="30" alt="github"
+        /></a>
+        <a
+          *ngIf="allData.twitter"
+          class="w3-hover-shadow"
+          style="margin-right: 10px !important"
+          href="{{ allData.twitter }}"
+          ><img src="./assets/social/twitter.png" width="30" alt="github"
+        /></a>
+        <a
+          *ngIf="allData.Facebook"
+          class="w3-hover-shadow"
+          style="margin-right: 10px !important"
+          ><img src="./assets/social/reddit.png" width="25" alt="github"
+        /></a>
+        <a
+          *ngIf="allData.Facebook"
+          class="w3-hover-shadow"
+          style="margin-right: 10px !important"
+          ><img src="./assets/portfolio/codepen.png" width="25" alt="github"
+        /></a>
+        <a
+          *ngIf="allData.Facebook"
+          class="w3-hover-shadow"
+          style="margin-right: 10px !important"
+          ><img src="./assets/social/pinterest.png" width="25" alt="github"
+        /></a>
+        <a
+          *ngIf="allData.Facebook"
+          class="w3-hover-shadow"
+          style="margin-right: 10px !important"
+          ><img src="./assets/social/slack.png" width="25" alt="github"
+        /></a>
+        <a
+          *ngIf="allData.Facebook"
+          class="w3-hover-shadow"
+          style="margin-right: 10px !important"
+          ><img src="./assets/social/quora.png" width="25" alt="github"
+        /></a>
+        <a
+          *ngIf="allData.Facebook"
+          class="w3-hover-shadow"
+          style="margin-right: 10px !important"
+          ><img src="./assets/portfolio/codechef.png" width="20" alt="github"
+        /></a>
+        <a
+          *ngIf="allData.Facebook"
+          class="w3-hover-shadow"
+          style="margin-right: 10px !important"
+          ><img src="./assets/portfolio/codeforces.png" width="25" alt="github"
+        /></a>
+        <a
+          *ngIf="allData.Facebook"
+          class="w3-hover-shadow"
+          style="margin-right: 10px !important"
+          ><img src="./assets/portfolio/hackerrank.png" width="30" alt="github"
+        /></a>
+        <a
+          *ngIf="allData.leetcode"
+          class="w3-hover-shadow"
+          style="margin-right: 10px !important"
+          ><img src="./assets/portfolio/leetcode.png" width="25" alt="github"
+        /></a>
+        <a
+          *ngIf="allData.Facebook"
+          class="w3-hover-shadow"
+          style="margin-right: 10px !important"
+          ><img src="./assets/portfolio/spotify.png" width="25" alt="github"
+        /></a>
+        <a
+          *ngIf="allData.Facebook"
+          class="w3-hover-shadow"
+          style="margin-right: 10px !important"
+          ><img src="./assets/portfolio/kaggle.png" width="25" alt="github"
+        /></a>
+        <a
+          *ngIf="allData.Facebook"
+          class="w3-hover-shadow"
+          style="margin-right: 10px !important"
+          ><img src="./assets/social/stackoverflow.png" width="25" alt="github"
+        /></a>
+      </p>
+      <!-- <p>basic details like location, ph no, email etc</p> -->
+      <span class="w3-small"
+        ><i class="fa fa-map-marker" aria-hidden="true"
+          >&nbsp;{{ allData.location }}</i
+        ></span
+      >
+      &nbsp;
+      <span class="w3-small"
+        ><i class="fa fa-building" aria-hidden="true"
+          >&nbsp;{{ allData.work }}</i
+        ></span
+      >
+      &nbsp;
+      <span class="w3-small"
+        ><i class="fa fa-link" aria-hidden="true"
+          >&nbsp;{{ allData.website }}</i
+        ></span
+      >
+      &nbsp;
+      <span class="w3-small"
+        ><i class="fa fa-phone" aria-hidden="true"
+          >&nbsp;{{ allData.phone }}</i
+        ></span
+      >
+    </div>
+  </div>
+  <hr>
+  <mat-accordion class="w3-container">
+    <mat-expansion-panel
+      (opened)="projectOpenState = true"
+      (closed)="projectOpenState = false"
+      class="w3-container w3-large"
+    >
+      <mat-expansion-panel-header
+        style="height: 100px"
+        class="w3-container w3-large"
+      >
+        <mat-panel-title class="w3-center">
+          <h1 class="w3-container w3-margin-top">
+            <p class="w3-left">Projects</p>
+            <!-- <p class="w3-right w3-small">
+                        <button *ngIf="!guest" mat-raised-button class="w3-btn " (click)="openAdd()">
+                            <mat-icon>add</mat-icon>add
+                        </button>
+                    </p> -->
+          </h1>
+        </mat-panel-title>
+        <mat-panel-description
+          class="w3-container w3-right"
+          style="justify-content: end"
+        >
+          <button *ngIf="!guest" mat-raised-button (click)="openAdd()">
+            <mat-icon>add</mat-icon>add
+          </button>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <hr />
+      <mat-list class="w3-padding">
+        <mat-list-item
+          class="w3-round w3-margin-bottom"
+          style="height: 100%"
+          *ngFor="let project of projects"
+        >
+          <img
+            matListItemAvatar
+            src="https://cdn-icons-png.flaticon.com/512/6596/6596121.png"
+          />
+          <span matListItemTitle
+            ><a class="w3-text-black" href=""
+              >{{ project.title }}&nbsp;<i
+                class="w3-tiny w3-text-black fa fa-external-link"
+                aria-hidden="true"
+              ></i></a
+          ></span>
+          <div matListItemMeta class="w3-text-gray w3-tiny w3-row">
+            <button
+              *ngIf="!guest"
+              type="button"
+              class="w3-right w3-margin w3-small"
+              (click)="deleteProject(project)"
+              mat-icon-button
+              color="primary"
+              aria-label="Example icon button with a home icon"
+            >
+              <mat-icon class="w3-medium">delete</mat-icon>
+            </button>
+          </div>
+          <p matListItemLine class="w3-text-gray">{{ project.desc }}</p>
+          <mat-chip-listbox matListItemLine class="w3-tiny" aria-label="Stack">
+            <mat-chip *ngFor="let chip of project.stack">{{ chip }}</mat-chip>
+          </mat-chip-listbox>
+        </mat-list-item>
+      </mat-list>
+    </mat-expansion-panel>
+    <hr />
+    <mat-expansion-panel
+      (opened)="githubOpenState = true"
+      (closed)="githubOpenState = false"
+      class="w3-container w3-large"
+    >
+      <mat-expansion-panel-header
+        style="height: 100px"
+        class="w3-container w3-large"
+      >
+        <mat-panel-title class="w3-center">
+          <h1 class="w3-container w3-margin-top">
+            <p class="w3-left">Github Repositories</p>
+          </h1>
+        </mat-panel-title>
+        <mat-panel-description
+          class="w3-container w3-right"
+          style="justify-content: end"
+        >
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <hr />
+      <mat-list class="w3-padding">
+        <mat-list-item
+          class="w3-round-xlarge w3-border-0 w3-margin-bottom"
+          *ngFor="let repo of repos"
+        >
+          <img matListItemAvatar src="{{ userData.avatar_url }}" />
+          <span matListItemTitle
+            ><a class="w3-text-black" href="{{ repo.html_url }}"
+              >{{ repo.name }}&nbsp;<i
+                class="w3-tiny w3-text-black fa fa-external-link"
+                aria-hidden="true"
+              ></i></a
+          ></span>
+          <div matListItemMeta class="w3-text-gray w3-tiny w3-row">
+            <p class="w3-left w3-margin">
+              updated at <br />{{ repo.updated_at.slice(0, 10) }}
+            </p>
+          </div>
+          <p matListItemLine class="w3-text-gray">{{ repo.description }}</p>
+        </mat-list-item>
+      </mat-list>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>

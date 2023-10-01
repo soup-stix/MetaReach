@@ -1,0 +1,18 @@
+<!-- <p>shareable works!</p> -->
+<h1 class="w3-title w3-margin w3-center">Share Profile</h1>
+<hr>
+    <div class="w3-container w3-center">
+        <mat-form-field appearance="outline" color="primary">
+            <mat-label>Copy link</mat-label>
+            <input matInput type="text" class="w3-input" [(ngModel)]="url" placeholder={{url}}>
+        </mat-form-field>
+        <button [cdkCopyToClipboard]="url" class="w3-btn w3-round-large w3-large"><mat-icon>link</mat-icon></button>
+        <br>
+        <button type="button" (click)="shareOnFacebook()" class="w3-btn w3-round-large fa fa-facebook"></button>
+        <button type="button" (click)="shareOnTwitter()" class="w3-btn w3-round-large fa fa-twitter"></button>
+        <button type="button" (click)="shareOnWhatsapp()" class="w3-btn w3-round-large fa fa-whatsapp"></button>
+        <button type="button" (click)="shareOnInstagram()" class="w3-btn w3-round-large fa fa-instagram"></button>
+
+    </div>
+<hr>
+

@@ -1,0 +1,114 @@
+{ 
+    "portfolio": [
+        {
+            "label": "Github*",
+            "icon": "./assets/portfolio/github.png",
+            "placeholder": "username",
+            "control": "github"
+          },
+          {
+            "label": "Leetcode",
+            "icon": "./assets/portfolio/leetcode.png",
+            "placeholder": "link to profile",
+            "control": "leetcode"
+          },
+          {
+            "label": "Kaggle",
+            "icon": "./assets/portfolio/kaggle.png",
+            "placeholder": "link to profile",
+            "control": "kaggle"
+          },
+          {
+            "label": "Hackerrank",
+            "icon": "./assets/portfolio/hackerrank.png",
+            "placeholder": "link to profile",
+            "control": "hackerrank"
+          },
+          {
+            "label": "Dribble",
+            "icon": "./assets/portfolio/dribble.png",
+            "placeholder": "link to profile",
+            "control": "dribble"
+          },
+          {
+            "label": "CodePen",
+            "icon": "./assets/portfolio/codepen.png",
+            "placeholder": "link to profile",
+            "control": "codepen"
+          },
+          {
+            "label": "Behance",
+            "icon": "./assets/portfolio/behance.png",
+            "placeholder": "link to profile",
+            "control": "behance"
+          },
+          {
+            "label": "CodeChef",
+            "icon": "./assets/portfolio/codechef.png",
+            "placeholder": "link to profile",
+            "control": "codechef"
+          },
+          {
+            "label": "CodeForces",
+            "icon": "./assets/portfolio/codeforces.png",
+            "placeholder": "link to profile",
+            "control": "codeforces"
+          }
+    ],
+    "social": [
+      {
+          "label": "Facebook",
+          "icon": "./assets/social/facebook.png",
+          "placeholder": "link to profile",
+          "control": "facebook"
+        },
+        {
+          "label": "Gmail",
+          "icon": "./assets/social/gmail.png",
+          "placeholder": "email",
+          "control": "gmail"
+        },
+        {
+          "label": "LinkedIn",
+          "icon": "./assets/social/linkedin.png",
+          "placeholder": "link to profile",
+          "control": "linkedin"
+        },
+        {
+          "label": "Pinterest",
+          "icon": "./assets/social/pinterest.png",
+          "placeholder": "link to profile",
+          "control": "pinterest"
+        },
+        {
+          "label": "Quora",
+          "icon": "./assets/social/quora.png",
+          "placeholder": "link to profile",
+          "control": "quora"
+        },
+        {
+          "label": "Reddit",
+          "icon": "./assets/social/reddit.png",
+          "placeholder": "link to profile",
+          "control": "reddit"
+        },
+        {
+          "label": "Slack",
+          "icon": "./assets/social/slack.png",
+          "placeholder": "link to profile",
+          "control": "slack"
+        },
+        {
+          "label": "StackOverflow",
+          "icon": "./assets/social/stackoverflow.png",
+          "placeholder": "link to profile",
+          "control": "stackoverflow"
+        },
+        {
+          "label": "Twitter",
+          "icon": "./assets/social/twitter.png",
+          "placeholder": "link to profile",
+          "control": "twitter"
+        }
+  ]
+}

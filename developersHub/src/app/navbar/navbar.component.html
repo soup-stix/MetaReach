@@ -1,0 +1,39 @@
+<p>
+  <mat-toolbar style="background-color: black;">
+    <img [routerLink]="['/home']" src="./assets/dh.png" style="width: 40px">
+    <div class="w3-margin w3-padding-32">
+    <p class="w3-medium w3-text-white" style="margin-bottom: 0px !important;">DEVELOPERS HUB</p>
+    <small class="w3-tiny w3-text-white" style="margin-top: 0px !important;">SHARE FOR SUCCESS</small>
+    </div>
+    <!-- <span><h6 style="color: white;">Developers <button [routerLink]="['/home']" mat-flat-button color="primary"><h6>Hub</h6></button></h6></span> -->
+    <span class="example-spacer"></span>
+    <button
+      mat-icon-button [routerLink]="['/profile', 'soup-stix']"
+      class="example-icon favorite-icon" style="color: white;"
+      aria-label="Example icon-button with person"
+    >
+      <mat-icon>person</mat-icon>
+    </button>
+    <button
+      mat-icon-button
+      class="example-icon favorite-icon" style="color: white;"
+      aria-label="Example icon-button with heart icon"
+    >
+      <mat-icon>favorite</mat-icon>
+    </button>
+    <button
+      mat-icon-button
+      class="example-icon" style="color: white;"
+      aria-label="Example icon-button with share icon"
+      (click)="open()"
+    >
+      <mat-icon>share</mat-icon>
+    </button>
+  </mat-toolbar>
+</p>
+
+<style>
+.example-spacer {
+  flex: 1 1 auto;
+}
+</style>

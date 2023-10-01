@@ -1,0 +1,71 @@
+<h1 class="w3-title w3-margin w3-center">Add developer profile</h1>
+<hr>
+<form [formGroup]="profileForm" class="w3-margin">
+    <mat-list>
+        <h3 class="w3-margin-bottom">Portfolio</h3>
+        <mat-list-item lines="8" *ngFor="let item of portfolio">
+          <div matListItemTitle class="w3-margin-bottom"><img src={{item.icon}} width="20" alt="github">&nbsp;{{item.label}}</div><br>
+          <div matListItemLine>
+            <mat-form-field appearance="outline" color="primary">
+                <input matInput type="text" formControlName={{item.control}} placeholder={{item.placeholder}}>
+                <mat-error *ngIf="profileForm.invalid ">Invalid username</mat-error>
+            </mat-form-field>
+          </div>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+        <h3 class="w3-margin-bottom">Social</h3>
+        <mat-list-item lines="6" *ngFor="let item of social">
+          <div matListItemTitle class="w3-margin-bottom"><img src={{item.icon}} width="20" alt="github">&nbsp;{{item.label}}</div><br>
+          <div matListItemLine>
+            <mat-form-field appearance="outline" color="primary">
+                <input matInput type="text" formControlName={{item.control}} placeholder={{item.placeholder}}>
+                <mat-error *ngIf="profileForm.invalid">invalid username</mat-error>
+            </mat-form-field>
+          </div>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+        <h3 class="w3-margin-bottom">Information</h3>
+        <mat-list-item lines="6">
+          <div matListItemTitle class="w3-margin-bottom"><i class="fa fa-map-marker" aria-hidden="true"></i>&nbsp;Location</div><br>
+          <div matListItemLine>
+            <mat-form-field appearance="outline" color="primary">
+                <input matInput type="text" formControlName="location" placeholder="location">
+                <mat-error *ngIf="profileForm.invalid">invalid username</mat-error>
+                <mat-hint>City, Country....&nbsp;ex: New York, United States</mat-hint>
+            </mat-form-field>
+          </div>
+        </mat-list-item>
+        <mat-list-item lines="6">
+          <div matListItemTitle class="w3-margin-bottom"><i class="fa fa-building" aria-hidden="true"></i>&nbsp;Work/Institution</div><br>
+          <div matListItemLine>
+            <mat-form-field appearance="outline" color="primary">
+                <input matInput type="text" formControlName="work" placeholder="work/institution">
+                <mat-error *ngIf="profileForm.invalid">invalid username</mat-error>
+            </mat-form-field>
+          </div>
+        </mat-list-item>
+        <mat-list-item lines="6">
+          <div matListItemTitle class="w3-margin-bottom"><i class="fa fa-phone" aria-hidden="true"></i>&nbsp;Phone</div><br>
+          <div matListItemLine>
+            <mat-form-field appearance="outline" color="primary">
+                <input matInput type="text" formControlName="phone" placeholder="phone number">
+                <mat-error *ngIf="profileForm.invalid">invalid username</mat-error>
+            </mat-form-field>
+          </div>
+        </mat-list-item>
+        <mat-list-item lines="6">
+          <div matListItemTitle class="w3-margin-bottom"><i class="fa fa-link" aria-hidden="true"></i>&nbsp;Website</div><br>
+          <div matListItemLine>
+            <mat-form-field appearance="outline" color="primary">
+                <input matInput type="text" formControlName="website" placeholder="website link">
+                <mat-error *ngIf="profileForm.invalid">invalid username</mat-error>
+            </mat-form-field>
+          </div>
+        </mat-list-item>
+    </mat-list>
+    <hr>
+    <div class="w3-container w3-right">
+        <button mat-raised-button class="w3-margin" type="button" (click)="activeModal.close('Close click')">Cancel</button>
+        <button mat-raised-button class="w3-margin" type="submit" (click)="submit()" [disabled]="!profileForm.valid" color="primary">Submit</button>  
+    </div>
+</form>

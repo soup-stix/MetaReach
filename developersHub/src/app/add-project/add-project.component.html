@@ -1,0 +1,39 @@
+<!-- <p>add-project works!</p> -->
+<h1 class="w3-title w3-margin w3-center">Add Project</h1>
+<hr>
+<form [formGroup]="addProject" class="w3-margin">
+    <mat-form-field appearance="outline" color="primary">
+        <mat-label>Title</mat-label>
+        <input matInput type="text" formControlName="title" placeholder="title">
+        <mat-error *ngIf="addProject.invalid">invalid username</mat-error>
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="outline" color="primary">
+        <mat-label>Description</mat-label>
+        <input matInput type="text" formControlName="desc" placeholder="description">
+        <mat-error *ngIf="addProject.invalid">invalid username</mat-error>
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="outline" color="primary" class="example-form-field">
+        <mat-label>Tech Stack</mat-label>
+        <mat-chip-grid appearance="outline" color="primary" #chipGrid aria-label="Enter tech stack" formControlName="stack" >
+          <mat-chip-row *ngFor="let keyword of keywords" (removed)="removeKeyword(keyword)">
+            {{keyword}}
+            <button matChipRemove aria-label="'remove ' + keyword">
+              <mat-icon>cancel</mat-icon>
+            </button>
+          </mat-chip-row>
+        </mat-chip-grid>
+        <input placeholder="add more..."
+                [matChipInputFor]="chipGrid"
+                (matChipInputTokenEnd)="add($event)"/>
+        <mat-hint>press enter after each item to append...</mat-hint>
+    </mat-form-field>
+    <mat-error *ngIf="addProject.get('emails')?.hasError('incorrectEmail')">Invalid email ID</mat-error>    
+    <br><br>
+    <hr>
+    <div class="w3-container w3-right">
+        <button mat-raised-button class="w3-margin" type="button" (click)="activeModal.close('Close click')">Cancel</button>
+        <button mat-raised-button class="w3-margin" type="submit" (click)="submit()" [disabled]="!addProject.valid" color="primary">Add</button>  
+    </div>
+</form>

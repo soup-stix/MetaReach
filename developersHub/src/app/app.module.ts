@@ -1,13 +1,10 @@
-import { NgModule } from '@angular/core';
+import { NgModule, isDevMode } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
-// firebase
-import { provideFirebaseApp, getApp, initializeApp } from '@angular/fire/app';
-import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 // Mat Lib Import
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
@@ -33,16 +30,6 @@ import { MatChipsModule } from '@angular/material/chips';
 import { AuthService } from './service/auth-service.service';
 import { ShareableComponent } from './shareable/shareable.component';
 import { CallbackComponent } from './callback/callback.component';
-// firebase config
-const firebaseConfig = {
-  apiKey: "AIzaSyA3jDGh3jnaaglZUT-cpy8NCn0AvueDW5M",
-  authDomain: "developers-hub-f83f4.firebaseapp.com",
-  projectId: "developers-hub-f83f4",
-  storageBucket: "developers-hub-f83f4.appspot.com",
-  messagingSenderId: "1022900626507",
-  appId: "1:1022900626507:web:732ac18e44521ed6fc59ce"
-};
-
 
 
 @NgModule({
@@ -74,9 +61,7 @@ const firebaseConfig = {
     MatExpansionModule,
     ClipboardModule,
     NgbModule,
-    NgbCarouselModule,
-    provideFirebaseApp(() => initializeApp(firebaseConfig)),
-    provideFirestore(() => getFirestore()),
+    NgbCarouselModule
   ],
   providers: [DatabaseService, AuthService],
   bootstrap: [AppComponent]

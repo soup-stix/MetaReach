@@ -1,4 +1,4 @@
-import { HttpClient, HttpXhrBackend } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpXhrBackend } from '@angular/common/http';
 import { Component, Input } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder, AbstractControl } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -22,6 +22,15 @@ async function githubUser(control: AbstractControl): Promise<{ [key: string]: an
   }
   return {invalidUsername:"Invalid Github User"};
 }
+
+const httpOptions = {
+  headers: new HttpHeaders({
+    'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin': 'http://localhost:4200/', // Replace with your Angular app's origin
+    'Access-Control-Allow-Credentials': 'true'
+  }),
+  withCredentials: true  // Include credentials (cookies)
+};
 
 @Component({
   selector: 'app-signup',
@@ -92,11 +101,7 @@ export class SignupComponent {
     this.profileForm.controls["github"].enable();
     console.log(this.profileForm.value)
     if (this.update == false){
-        this.http.post<any>("http://127.0.0.1:3000/addUser",this.profileForm.value,{
-        "headers": { 
-          'Content-Type': 'application/json'
-        }
-        }).subscribe({
+        this.http.post<any>("http://127.0.0.1:3000/pvt/addUser",this.profileForm.value, httpOptions).subscribe({
           next: data => {
               console.log(data.message);
               this.activeModal.close('Close click')
@@ -111,11 +116,8 @@ export class SignupComponent {
         })
     }
     else {
-      this.http.post<any>("http://127.0.0.1:3000/updateUser",this.profileForm.value,{
-      "headers": { 
-        'Content-Type': 'application/json'
-      }
-      }).subscribe({
+      this.http.post<any>("http://localhost:3000/pvt/updateUser",this.profileForm.value, httpOptions)
+      .subscribe({
         next: data => {
             console.log(data.message);
             this.activeModal.close('Close click')
@@ -124,7 +126,7 @@ export class SignupComponent {
         },
         error: error => {
             console.error('There was an error!', error);
-            this._snackBar.open(error.error.message, "ok");
+            this._snackBar.open("There was an error!" , "ok");
             this.activeModal.close('Close click')
         }
       })

@@ -1,0 +1,1 @@
+{"version":3,"file":"isPlainObject.js","sourceRoot":"","sources":["../../../../../packages/akita/src/lib/isPlainObject.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,SAAS,EAAE,MAAM,aAAa,CAAC;AAExC,YAAY;AACZ,MAAM,UAAU,aAAa,CAAC,KAAK;IACjC,OAAO,SAAS,CAAC,KAAK,CAAC,IAAI,KAAK,CAAC,WAAW,CAAC,IAAI,KAAK,QAAQ,CAAC;AACjE,CAAC"}

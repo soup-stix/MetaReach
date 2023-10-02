@@ -1,0 +1,1 @@
+{"version":3,"file":"stores.js","sourceRoot":"","sources":["../../../../../packages/akita/src/lib/stores.ts"],"names":[],"mappings":"AACA,OAAO,EAAE,SAAS,EAAE,MAAM,QAAQ,CAAC;AAGnC,YAAY;AACZ,MAAM,CAAC,MAAM,UAAU,GAAwC,EAAE,CAAC;AAElE,YAAY;AACZ,MAAM,CAAC,MAAM,WAAW,GAAwC,EAAE,CAAC;AAEnE,IAAI,SAAS,EAAE;IACZ,MAAc,CAAC,QAAQ,GAAG,UAAU,CAAC;IACrC,MAAc,CAAC,SAAS,GAAG,WAAW,CAAC;CACzC"}

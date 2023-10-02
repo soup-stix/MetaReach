@@ -1,0 +1,11 @@
+import { Store } from './store';
+import { Query } from './query';
+import { StoreConfigOptions } from './storeConfig';
+import { EntityStore } from './entityStore';
+import { QueryEntity } from './queryEntity';
+import { QueryConfigOptions } from './queryConfig';
+import { EntityState } from './types';
+export declare function createStore<State>(initialState: Partial<State>, options: Partial<StoreConfigOptions>): Store<State>;
+export declare function createQuery<State>(store: Store<State>): Query<State>;
+export declare function createEntityStore<State extends EntityState>(initialState: Partial<State>, options: Partial<StoreConfigOptions>): EntityStore<State, import("./types").getEntityType<State>, import("./types").getIDType<State>>;
+export declare function createEntityQuery<State extends EntityState>(store: EntityStore<State>, options?: QueryConfigOptions): QueryEntity<State, import("./types").getEntityType<State>, import("./types").getIDType<State>>;

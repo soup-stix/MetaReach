@@ -1,0 +1,1 @@
+{"version":3,"file":"combineQueries.js","sourceRoot":"","sources":["../../../../../packages/akita/src/lib/combineQueries.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,SAAS,EAAE,aAAa,EAAc,MAAM,MAAM,CAAC;AAK5D,MAAM,UAAU,cAAc,CAAwB,WAAc;IAClE,OAAO,aAAa,CAAC,WAAW,CAAC,CAAC,IAAI,CAAC,SAAS,CAAC,CAAC,CAAC,CAAQ,CAAC;AAC9D,CAAC"}

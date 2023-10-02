@@ -14,6 +14,7 @@
         class="w3-margin-top"
         color="primary"
         (click)="open()"
+        *ngIf="loggedIn === user"
       >
         Edit details
       </button>
@@ -23,11 +24,11 @@
       style="box-shadow: inset 0 0 30px #311b0b; height: 100% !important"
     >
       <h1 class="w3-title">{{ userData.name }}</h1>
-      <a class="w3-text-white w3-hover-black" href="{{ userData.html_url }}"
+      <a class="w3-text-white w3-hover-shadow" href="{{ userData.html_url }}"
         ><small>{{ userData.login }}</small></a
       >
       <p>{{ userData.bio }}</p>
-      <br /><br /><br /><br /><br /><br />
+      <br><br>
       <p>
         <a
           *ngIf="allData.github"
@@ -150,22 +151,22 @@
         /></a>
       </p>
       <!-- <p>basic details like location, ph no, email etc</p> -->
-      <span class="w3-small"
+      <a href="{{'https://www.google.com/maps/place/'+allData.location}}"  class="w3-small w3-hover-shadow w3-text-white"
         ><i class="fa fa-map-marker" aria-hidden="true"
           >&nbsp;{{ allData.location }}</i
-        ></span
+        ></a
       >
       &nbsp;
-      <span class="w3-small"
+      <a href="{{'https://www.google.com/search?q='+allData.work}}" class="w3-small w3-text-white w3-hover-shadow"
         ><i class="fa fa-building" aria-hidden="true"
           >&nbsp;{{ allData.work }}</i
-        ></span
+        ></a
       >
       &nbsp;
-      <span class="w3-small"
+      <a href="{{allData.website}}"class="w3-small w3-text-white w3-hover-shadow"
         ><i class="fa fa-link" aria-hidden="true"
           >&nbsp;{{ allData.website }}</i
-        ></span
+        ></a
       >
       &nbsp;
       <span class="w3-small"
@@ -181,6 +182,7 @@
       (opened)="projectOpenState = true"
       (closed)="projectOpenState = false"
       class="w3-container w3-large"
+      [expanded]="true"
     >
       <mat-expansion-panel-header
         style="height: 100px"
@@ -200,7 +202,7 @@
           class="w3-container w3-right"
           style="justify-content: end"
         >
-          <button *ngIf="!guest" mat-raised-button (click)="openAdd()">
+          <button *ngIf="loggedIn === user" mat-raised-button (click)="openAdd()">
             <mat-icon>add</mat-icon>add
           </button>
         </mat-panel-description>
@@ -243,11 +245,14 @@
         </mat-list-item>
       </mat-list>
     </mat-expansion-panel>
+    </mat-accordion>
     <hr />
+    <mat-accordion class="w3-container">
     <mat-expansion-panel
       (opened)="githubOpenState = true"
       (closed)="githubOpenState = false"
       class="w3-container w3-large"
+      [expanded]="true"
     >
       <mat-expansion-panel-header
         style="height: 100px"

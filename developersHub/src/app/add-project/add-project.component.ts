@@ -7,6 +7,7 @@ import { MatChipInputEvent } from '@angular/material/chips';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserComponent } from '../user/user.component';
+import { environment } from 'src/environments/environment';
 
 
 @Component({
@@ -74,10 +75,11 @@ export class AddProjectComponent {
     // this._snackBar.open("new project was added", "ok");
     // this.user.projects.push(this.formControl.value)
     console.log('submit worked: ', this.addProject.value, this.formControl.value, this.name)
-    this.http.post<any>("http://127.0.0.1:3000/addProject/"+this.name,this.addProject.value,{
+    this.http.post<any>(environment.pvtUrl+"addProject/"+this.name,this.addProject.value,{
       "headers": { 
         'Content-Type': 'application/json'
-      }
+      },
+      withCredentials: true
     }).subscribe({
       next: data => {
           console.log(data.message);
@@ -87,6 +89,7 @@ export class AddProjectComponent {
       },
       error: error => {
           console.error('There was an error!', error);
+          this._snackBar.open("There was an error!", "ok");
       }
     })
     

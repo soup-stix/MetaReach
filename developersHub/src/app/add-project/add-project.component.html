@@ -3,15 +3,21 @@
 <hr>
 <form [formGroup]="addProject" class="w3-margin">
     <mat-form-field appearance="outline" color="primary">
-        <mat-label>Title</mat-label>
+        <mat-label>Title*</mat-label>
         <input matInput type="text" formControlName="title" placeholder="title">
-        <mat-error *ngIf="addProject.invalid">invalid username</mat-error>
+        <mat-error *ngIf="addProject.invalid">invalid title</mat-error>
     </mat-form-field>
     <br>
     <mat-form-field appearance="outline" color="primary">
-        <mat-label>Description</mat-label>
+        <mat-label>Description*</mat-label>
         <input matInput type="text" formControlName="desc" placeholder="description">
-        <mat-error *ngIf="addProject.invalid">invalid username</mat-error>
+        <mat-error *ngIf="addProject.invalid">invalid desc</mat-error>
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="outline" color="primary">
+      <mat-label>Url</mat-label>
+      <input matInput type="text" formControlName="url" placeholder="url">
+      <mat-error *ngIf="addProject.invalid">invalid url</mat-error>
     </mat-form-field>
     <br>
     <mat-form-field appearance="outline" color="primary" class="example-form-field">

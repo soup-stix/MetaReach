@@ -1,0 +1,15 @@
+.avatar {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 40px;
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+  }
+
+  .spacer {
+    flex: 1; /* This will make the spacer take up the remaining vertical space */
+  }

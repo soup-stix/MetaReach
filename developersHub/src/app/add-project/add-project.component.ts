@@ -8,6 +8,7 @@ import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserComponent } from '../user/user.component';
 import { environment } from 'src/environments/environment';
+import { CacheService } from '../shared/cacheService';
 
 
 @Component({
@@ -29,7 +30,7 @@ export class AddProjectComponent {
   addProject: FormGroup = new FormGroup({});
   formControl = new FormControl([]);
   
-  constructor(private _snackBar: MatSnackBar, private http: HttpClient, public activeModal: NgbActiveModal, public fb: FormBuilder) {}
+  constructor(private cache: CacheService, private _snackBar: MatSnackBar, private http: HttpClient, public activeModal: NgbActiveModal, public fb: FormBuilder) {}
 
 
   ngOnInit() {
@@ -39,6 +40,7 @@ export class AddProjectComponent {
   this.addProject = this.fb.group({
     title: this.fb.control("", Validators.required),
     desc: this.fb.control("", Validators.required),
+    url: this.fb.control(""),
     stack: this.fb.control([]),
   });
   }
@@ -77,14 +79,15 @@ export class AddProjectComponent {
     console.log('submit worked: ', this.addProject.value, this.formControl.value, this.name)
     this.http.post<any>(environment.pvtUrl+"addProject/"+this.name,this.addProject.value,{
       "headers": { 
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${this.cache.getData().jwt}`,
       },
       withCredentials: true
     }).subscribe({
       next: data => {
           console.log(data.message);
-          this._snackBar.open(data.message, "ok");
           this.activeModal.close('Close click')
+          this._snackBar.open(data.message, "ok")
           window.location.reload(); 
       },
       error: error => {

@@ -1,19 +1,29 @@
 <p>
-  <mat-toolbar style="background-color: black;">
+  <mat-toolbar class="w3-metro-darken">
     <img [routerLink]="['/home']" src="./assets/dh.png" style="width: 40px">
-    <div class="w3-margin w3-padding-32">
-    <p class="w3-medium w3-text-white" style="margin-bottom: 0px !important;">DEVELOPERS HUB</p>
-    <small class="w3-tiny w3-text-white" style="margin-top: 0px !important;">SHARE FOR SUCCESS</small>
+    <div class="w3-margin w3-text-pale-red">
+      MetaReach
+    <!-- <p class="w3-text-white" >Devsies</p> -->
+    <!-- <small class="w3-tiny w3-text-white" style="margin-top: 0px !important;">SHARE FOR SUCCESS</small> -->
     </div>
     <!-- <span><h6 style="color: white;">Developers <button [routerLink]="['/home']" mat-flat-button color="primary"><h6>Hub</h6></button></h6></span> -->
     <span class="example-spacer"></span>
-    <button
-      mat-icon-button [routerLink]="['/profile', 'soup-stix']"
+    <!-- <button
+      mat-icon-button [routerLink]="['/profile', user]"
       class="example-icon favorite-icon" style="color: white;"
       aria-label="Example icon-button with person"
     >
       <mat-icon>person</mat-icon>
-    </button>
+    </button> -->
+    <button mat-icon-button class="example-icon favorite-icon" [matMenuTriggerFor]="menu"><mat-icon>person</mat-icon></button>
+      <mat-menu #menu="matMenu">
+      <!-- <button mat-menu-item [routerLink]="['/profile', user]">My Profile</button> -->
+      <!-- <button mat-menu-item [routerLink]="['/home']">Home</button> -->
+      <button mat-menu-item >{{user}}</button>
+      <button mat-menu-item *ngIf="user != 'guest'" (click)="logout()">Logout</button>
+      <button mat-menu-item *ngIf="user == 'guest'">Login</button>
+    </mat-menu>
+
     <button
       mat-icon-button
       class="example-icon favorite-icon" style="color: white;"

@@ -1,4 +1,4 @@
-<p>home works!</p>
+<!-- <p>home works!</p>
 <ngb-carousel
 	*ngIf="images"
 	[showNavigationArrows]=true
@@ -9,12 +9,27 @@
 			<img [src]="image" height="400" width="100%"/>
 		</div>
 	</ng-template>
-</ngb-carousel>
-<h3>
-    Publish your links all in one place
+</ngb-carousel> -->
+<!-- <h3>
+    Tired of putting multiple links in your resume?
 </h3>
+<h3>
+    Dont worry, we got you covered<br>
+	Make your developer profile and get noticed now!! 
+</h3> -->
+<div class="w3-container w3-round-large w3-padding w3-margin" style="background-color: #d44669;">
+	<h3 class="w3-twothird">
+		Sign Up with you Github account.
+		<br> or Sign In if you already have a developer profile
+	</h3>
+	<div class="w3-third w3-padding">
+		<button mat-raised-button class="w3-margin-top w3-margin-bottom w3-black" (click)="loginWithGithub()">Sign in <img width="20px" class="w3-margin-bottom w3-margin-top w3-tiny" src="assets/portfolio/github.png"></button>
+		<br>
+		<button mat-raised-button class="w3-margin-bottom w3-black" (click)="signupWithGithub()" >Sign Up <img width="20px" class="w3-margin-bottom w3-margin-top w3-tiny" src="assets/portfolio/github.png"></button>
+	</div>
+</div>
+
 <div class="w3-center">
-    <button (click)="loginWithGithub()">Sign in with GitHub</button>
-    <button mat-raised-button class="w3-margin" color="primary" [routerLink]="['/profile', 'soup-stix']">my profile</button>
-    <button mat-raised-button class="w3-margin" color="primary" (click)="open()">add new developer profile</button>
+    <!-- <button mat-raised-button class="w3-margin" color="primary" [routerLink]="['/profile', 'soup-stix']">my profile</button> -->
+    <!-- <button mat-raised-button class="w3-margin" color="primary" (click)="open()">add new developer profile</button> -->
 </div>

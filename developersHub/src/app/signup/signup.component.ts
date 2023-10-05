@@ -4,6 +4,8 @@ import { FormGroup, FormControl, Validators, FormBuilder, AbstractControl } from
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import staticData from 'src/assets/config.json';
+import { environment } from 'src/environments/environment';
+import { CacheService } from '../shared/cacheService';
 // import { githubUser } from '../shared/validators';
 
 async function checkUser(value: any) {
@@ -23,13 +25,14 @@ async function githubUser(control: AbstractControl): Promise<{ [key: string]: an
   return {invalidUsername:"Invalid Github User"};
 }
 
-const httpOptions = {
+
+
+let httpOptions = {
   headers: new HttpHeaders({
     'Content-Type': 'application/json',
-    'Access-Control-Allow-Origin': 'http://localhost:4200/', // Replace with your Angular app's origin
-    'Access-Control-Allow-Credentials': 'true'
+    'Authorization': `Bearer `,
   }),
-  withCredentials: true  // Include credentials (cookies)
+  withCredentials: true 
 };
 
 @Component({
@@ -51,10 +54,20 @@ export class SignupComponent {
   profileForm: FormGroup = new FormGroup({});
   
   
-  constructor(private _snackBar: MatSnackBar, private http: HttpClient, public activeModal: NgbActiveModal, public fb: FormBuilder) {}
+  constructor(private cache: CacheService, private _snackBar: MatSnackBar, private http: HttpClient, public activeModal: NgbActiveModal, public fb: FormBuilder) {}
 
 
   ngOnInit() {
+
+    httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${this.cache.getData().jwt}`,
+      }),
+      withCredentials: true 
+    };
+
+
    this.portfolio = staticData.portfolio;
    this.social = staticData.social;
    console.log("prefilled data:",this.prefilled)
@@ -101,7 +114,7 @@ export class SignupComponent {
     this.profileForm.controls["github"].enable();
     console.log(this.profileForm.value)
     if (this.update == false){
-        this.http.post<any>("http://127.0.0.1:3000/pvt/addUser",this.profileForm.value, httpOptions).subscribe({
+        this.http.post<any>(environment.pvtUrl+"addUser",this.profileForm.value, httpOptions).subscribe({
           next: data => {
               console.log(data.message);
               this.activeModal.close('Close click')
@@ -116,7 +129,7 @@ export class SignupComponent {
         })
     }
     else {
-      this.http.post<any>("http://localhost:3000/pvt/updateUser",this.profileForm.value, httpOptions)
+      this.http.post<any>(environment.pvtUrl+"updateUser",this.profileForm.value, httpOptions)
       .subscribe({
         next: data => {
             console.log(data.message);

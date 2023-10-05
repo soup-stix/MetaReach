@@ -5,7 +5,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 // Mat Lib Import
+import {MatMenuModule} from '@angular/material/menu';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import {MatToolbarModule} from '@angular/material/toolbar';
@@ -59,11 +61,12 @@ import { CallbackComponent } from './callback/callback.component';
     MatChipsModule,
     MatSnackBarModule,
     MatExpansionModule,
+    MatMenuModule,
     ClipboardModule,
     NgbModule,
     NgbCarouselModule
   ],
-  providers: [DatabaseService, AuthService],
+  providers: [DatabaseService, AuthService, { provide: LocationStrategy, useClass: HashLocationStrategy }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,21 +1,19 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private githubClientId = 'd020d5881a5ee1ad50e8';
-  private githubRedirectUri = 'http://localhost:4200/profile/soup-stix';
-
   constructor(private http: HttpClient) {}
 
   getGithubLoginUrl(): string {
-    return `http://localhost:3000/auth/github`;  
+    return environment.apiUrl+"auth/github?action=signin";  
   }
 
-  handleGitHubCallback(code: string): Promise<any> {
-    const url = 'http://localhost:3000/auth/github/callback';
-    return this.http.post<any>(url, { code }).toPromise();
+  getGithubSignUpUrl(): string {
+    return environment.apiUrl+"auth/github?action=signup";  
   }
+
 }

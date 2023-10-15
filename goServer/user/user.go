@@ -12,9 +12,12 @@ import (
 
 // fetch user from mongodb
 func UserFetch(c *fiber.Ctx, client *mongo.Client) error {
+	// tokenString := c.Cookies("jwt_token")
+	// fmt.Println("verify token request recieved, token: ", tokenString)
+
 	// Retrieve the "id" request parameter
 	id := c.Params("id")
-	fmt.Println(id)
+	fmt.Println("id:", id)
 	// Access the "users" collection
 	collection := client.Database("developersHub").Collection("devs")
 
@@ -35,6 +38,7 @@ func UserFetch(c *fiber.Ctx, client *mongo.Client) error {
 
 // update user details
 func UpdateUser(c *fiber.Ctx, client *mongo.Client) error {
+	fmt.Println("update user request recieved!!")
 	// Parse the request body into a map
 	body := make(map[string]interface{})
 	if err := c.BodyParser(&body); err != nil {
@@ -62,6 +66,12 @@ func UpdateUser(c *fiber.Ctx, client *mongo.Client) error {
 
 // addUser adds a user if it doesn't already exist with the same GitHub username
 func AddUser(c *fiber.Ctx, client *mongo.Client) error {
+	type User struct {
+		GithubUsername string   `bson:"github"`
+		Projects       []string `bson:"projects"`
+		// Other user-related fields
+	}
+
 	// Parse the request body into a map
 	body := make(map[string]interface{})
 	if err := c.BodyParser(&body); err != nil {
@@ -109,11 +119,16 @@ func AddUser(c *fiber.Ctx, client *mongo.Client) error {
 	}
 
 	// User exists on GitHub, proceed to add the user to MongoDB
-	body["projects"] = []interface{}{}
+	body["projects"] = bson.A{}
 	fmt.Println("Body:", body)
 
+	user := User{
+		GithubUsername: githubUsername,
+		Projects:       []string{}, // Initialize as an empty slice
+	}
+
 	// Insert the user document
-	_, err = collection.InsertOne(context.TODO(), body)
+	_, err = collection.InsertOne(context.TODO(), user)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"message": "Failed to add user"})
 	}

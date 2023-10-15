@@ -3,6 +3,7 @@ package middleware
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gofiber/fiber/v2"
@@ -15,21 +16,28 @@ var jwtSecret = []byte("ijklwdhndkhgruiohkasuiweyf789")
 // verify jwt token
 func VerifyToken(client *mongo.Client) fiber.Handler {
 	return func(c *fiber.Ctx) error {
-		tokenString := c.Cookies("jwt_token")
+		// tokenString := c.Cookies("jwt_token", "")
+		// fmt.Println("verify token request recieved, token: ", tokenString)
 
-		// If no token in cookies, proceed to the next middleware or route handler
-		if tokenString == "" {
+		// // If no token in cookies, proceed to the next middleware or route handler
+		// if tokenString == "" {
+		// 	return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
+		// 		"error": "unauthorized",
+		// 	})
+		// }
+		// Extract the Authorization header
+		authorizationHeader := c.Get("Authorization")
+
+		// Check if the Authorization header is present and has the Bearer prefix
+		if authorizationHeader == "" || !strings.HasPrefix(authorizationHeader, "Bearer ") {
 			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
-				"error": "unauthorized",
+				"error": "Invalid or missing Authorization header",
 			})
 		}
 
-		// If no token in cookies, proceed to the next middleware or route handler
-		if tokenString == "" {
-			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
-				"error": "unauthorized",
-			})
-		}
+		tokenString := strings.Replace(authorizationHeader, "Bearer ", "", 1)
+
+		fmt.Println("Authorization header :", tokenString)
 
 		// Decrypt the JWT token and extract the custom data
 		data, err := decryptJWTToken(tokenString)

@@ -4,6 +4,8 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"net/http"
+	"time"
 
 	"github.com/developersHub/auth"
 	"github.com/developersHub/middleware"
@@ -16,24 +18,29 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
+func corsMiddleware(c *fiber.Ctx) error {
+	c.Set("Access-Control-Allow-Credentials", "true")
+	c.Set("Access-Control-Allow-Origin", "http://localhost:4200")
+	c.Set("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT, DELETE")
+	c.Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+
+	// Handle preflight requests
+	if c.Method() == "OPTIONS" {
+		return c.SendStatus(fiber.StatusOK)
+	}
+
+	return c.Next()
+}
+
 func main() {
 	app := fiber.New()
-	// Enable CORS with default options
-	app.Use(cors.New())
+	app.Use(cors.New(cors.Config{
+		AllowOrigins:     "https://metareach.netlify.app",
+		AllowCredentials: true,
+	}))
 
 	// sub routes"/api"
 	pvt := app.Group("/pvt")
-
-	// Define a middleware function to handle CORS
-	// corsMiddleware := func(c *fiber.Ctx) error {
-	// 	c.Set("Access-Control-Allow-Origin", "*")
-	// 	c.Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE")
-	// 	c.Set("Access-Control-Allow-Headers", "*")
-	// 	return c.Next()
-	// }
-
-	// // Use the CORS middleware for all routes
-	// app.Use(corsMiddleware)
 
 	opts := options.Client().ApplyURI("mongodb+srv://anandarul47:anand@devs.kewxw5f.mongodb.net/?retryWrites=true&w=majority")
 
@@ -48,6 +55,10 @@ func main() {
 		}
 	}()
 
+	pvt.Use(cors.New(cors.Config{
+		AllowOrigins:     "https://metareach.netlify.app",
+		AllowCredentials: true,
+	}))
 	//middlewares
 	pvt.Use(middleware.VerifyToken(client))
 
@@ -62,9 +73,14 @@ func main() {
 		return user.UserFetch(c, client)
 	})
 
-	// github callback
-	app.Get("/auth/github/callback", func(c *fiber.Ctx) error {
-		return auth.GithubAuthCallback(c, client)
+	// github callback signup
+	app.Get("/auth/github/callback/signin", func(c *fiber.Ctx) error {
+		return auth.GithubAuthCallbackLogin(c, client)
+	})
+
+	// github callback signup
+	app.Get("/auth/github/callback/signup", func(c *fiber.Ctx) error {
+		return auth.GithubAuthCallbackSignUp(c, client)
 	})
 
 	// github auth
@@ -88,7 +104,7 @@ func main() {
 	})
 
 	// add user
-	app.Post("/addUser", func(c *fiber.Ctx) error {
+	pvt.Post("/addUser", func(c *fiber.Ctx) error {
 		return user.AddUser(c, client)
 	})
 
@@ -97,9 +113,32 @@ func main() {
 		return user.UpdateUser(c, client)
 	})
 
+	// Define a route to handle the ping request
+	app.Get("/active", func(c *fiber.Ctx) error {
+		return c.SendString("Pong")
+	})
+
 	// Start the Fiber server
-	err = app.Listen(":3000")
-	if err != nil {
-		log.Fatal(err)
+	go func() {
+		if err := app.Listen(":3000"); err != nil {
+			log.Fatalf("Error: %v", err)
+		}
+	}()
+
+	// Periodic pinging every 5 minutes
+	ticker := time.NewTicker(5 * time.Minute)
+	for range ticker.C {
+		pingSelf()
 	}
+}
+
+func pingSelf() {
+	resp, err := http.Get("http://localhost:3000/active")
+	if err != nil {
+		fmt.Printf("Failed to ping: %v\n", err)
+		return
+	}
+	defer resp.Body.Close()
+
+	fmt.Println("Ping successful")
 }

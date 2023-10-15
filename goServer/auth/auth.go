@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strings"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gofiber/fiber/v2"
@@ -16,12 +17,24 @@ import (
 
 // Oauth variables
 var (
-	oauthConfig = &oauth2.Config{
+	oauthConfigLogin = &oauth2.Config{
 		ClientID:     "d020d5881a5ee1ad50e8",
 		ClientSecret: "e0a42f7baac204998a59585512ab8e3c762a1318",
-		RedirectURL:  "http://localhost:3000/auth/github/callback",
-		Scopes:       []string{"user"},
-		Endpoint:     github.Endpoint,
+		RedirectURL:  "https://developershub-1g45.onrender.com/auth/github/callback/signin",
+		// RedirectURL: "http://localhost:3000/auth/github/callback/signin",
+		Scopes:   []string{"user"},
+		Endpoint: github.Endpoint,
+	}
+)
+
+var (
+	oauthConfigSignUp = &oauth2.Config{
+		ClientID:     "d020d5881a5ee1ad50e8",
+		ClientSecret: "e0a42f7baac204998a59585512ab8e3c762a1318",
+		RedirectURL:  "https://developershub-1g45.onrender.com/auth/github/callback/signup",
+		// RedirectURL: "http://localhost:3000/auth/github/callback/signup",
+		Scopes:   []string{"user"},
+		Endpoint: github.Endpoint,
 	}
 )
 
@@ -30,18 +43,25 @@ var jwtSecret = []byte("ijklwdhndkhgruiohkasuiweyf789")
 
 // github auth
 func GithubAuth(c *fiber.Ctx, client *mongo.Client) error {
-	url := oauthConfig.AuthCodeURL("state")
-	fmt.Println("redirect url:", url)
-	return c.Redirect(url, http.StatusTemporaryRedirect)
+	action := c.Query("action")
+	if action == "signin" {
+		url := oauthConfigLogin.AuthCodeURL("state")
+		fmt.Println("redirect url:", url)
+		return c.Redirect(url, http.StatusTemporaryRedirect)
+	} else {
+		url := oauthConfigSignUp.AuthCodeURL("state")
+		fmt.Println("redirect url:", url)
+		return c.Redirect(url, http.StatusTemporaryRedirect)
+	}
 }
 
-// github callback
-func GithubAuthCallback(c *fiber.Ctx, client *mongo.Client) error {
+// github callback login
+func GithubAuthCallbackLogin(c *fiber.Ctx, client *mongo.Client) error {
 
 	fmt.Println("callback recieved")
 	code := c.Query("code")
-	fmt.Println(code)
-	token, err := oauthConfig.Exchange(c.Context(), code)
+	fmt.Println("code:", code)
+	token, err := oauthConfigLogin.Exchange(c.Context(), code)
 	fmt.Println("token:", token)
 	if err != nil {
 		// Handle the error and return an appropriate response
@@ -61,7 +81,7 @@ func GithubAuthCallback(c *fiber.Ctx, client *mongo.Client) error {
 	if err != nil {
 		// Handle the error appropriately
 		errorMessage := fmt.Sprintf("Failed to get Password: %v", err)
-		return c.Redirect("http://localhost:4200/profile/"+githubUsername, http.StatusTemporaryRedirect)
+		return c.Redirect("https://metareach.netlify.app/#/home", http.StatusTemporaryRedirect)
 		return c.Status(http.StatusInternalServerError).SendString(errorMessage)
 	}
 
@@ -89,30 +109,152 @@ func GithubAuthCallback(c *fiber.Ctx, client *mongo.Client) error {
 		Name:     "jwt_token",
 		Value:    tokenString,
 		HTTPOnly: true,
+		SameSite: "",
 	}
 	c.Cookie(&cookie)
 
 	// Redirect to your Angular application
-	return c.Redirect("http://localhost:4200/profile/"+githubUsername, http.StatusTemporaryRedirect)
+	return c.Redirect("https://metareach.netlify.app/#/profile/"+githubUsername+"?jwt="+tokenString, http.StatusTemporaryRedirect)
+}
+
+// github callback sign up
+func GithubAuthCallbackSignUp(c *fiber.Ctx, client *mongo.Client) error {
+
+	fmt.Println("callback recieved")
+	code := c.Query("code")
+	fmt.Println("code:", code)
+	token, err := oauthConfigSignUp.Exchange(c.Context(), code)
+	fmt.Println("token:", token)
+	if err != nil {
+		// Handle the error and return an appropriate response
+		errorMessage := fmt.Sprintf("Failed to exchange code for token: %v", err)
+		return c.Status(http.StatusInternalServerError).SendString(errorMessage)
+	}
+
+	// get username
+	githubUsername, err := getGitHubUsername(token.AccessToken)
+	if err != nil {
+		// Handle the error appropriately
+		errorMessage := fmt.Sprintf("Failed to get GitHub username: %v", err)
+		return c.Status(http.StatusInternalServerError).SendString(errorMessage)
+	}
+
+	type Project struct {
+		Desc  string   `json:"desc"`
+		Stack []string `json:"stack"`
+		Title string   `json:"title"`
+		Url   string   `json:"url"`
+	}
+
+	type Data struct {
+		Github   string    `json:"github"`
+		Projects []Project `json:"projects"`
+	}
+
+	type Cred struct {
+		Username string `json:"username"`
+		Password string `json:"password"`
+	}
+
+	// make a user with password as password lmao
+	Password := "password"
+
+	// Parse the request body into a map
+	body := Data{}
+	body.Github = githubUsername
+	body.Projects = []Project{}
+
+	cred := Cred{}
+	cred.Password = Password
+	cred.Username = githubUsername
+
+	// Check the username and password against MongoDB data
+	collection := client.Database("developersHub").Collection("credentials") // Replace with your actual DB and collection names
+	filter := bson.M{"username": githubUsername}
+	count, err := collection.CountDocuments(context.TODO(), filter)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": "Database error",
+		})
+	}
+
+	if count != 0 {
+		return c.Redirect("https://metareach.netlify.app/#/", http.StatusTemporaryRedirect)
+	}
+
+	// Access the "users" collection
+	collection = client.Database("developersHub").Collection("devs")
+
+	// User exists on GitHub, proceed to add the user to MongoDB
+	fmt.Println("Body:", body)
+
+	// Insert the user document
+	_, err = collection.InsertOne(context.TODO(), body)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"message": "Failed to add user"})
+	}
+
+	// Access the "credentials" collection
+	collection = client.Database("developersHub").Collection("credentials")
+
+	// User exists on GitHub, proceed to add the user to MongoDB
+	fmt.Println("Cred:", cred)
+
+	// Insert the cred document
+	_, err = collection.InsertOne(context.TODO(), cred)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"message": "Failed to add user"})
+	}
+
+	// return c.JSON(fiber.Map{"message": "User added successfully"}) // Modify the response as needed
+
+	customJson := map[string]interface{}{
+		"github":   token,
+		"user":     githubUsername,
+		"password": Password,
+	}
+
+	// Generate a JWT token
+	jwtToken := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"data": customJson,
+	})
+
+	// Sign the token with the secret key
+	tokenString, err := jwtToken.SignedString(jwtSecret)
+	if err != nil {
+		return err // Handle the error appropriately
+	}
+
+	fmt.Println("JWT token to be set:", tokenString)
+
+	// Set the token in an HTTP-only cookie
+	cookie := fiber.Cookie{
+		Name:     "jwt_token",
+		Value:    tokenString,
+		HTTPOnly: true,
+		SameSite: "",
+	}
+	c.Cookie(&cookie)
+
+	// Redirect to your Angular application
+	return c.Redirect("https://metareach.netlify.app/profile/#/"+githubUsername+"?jwt="+tokenString, http.StatusTemporaryRedirect)
 }
 
 // login to send back user and token
 func Login(c *fiber.Ctx, client *mongo.Client) error {
-	tokenString := c.Cookies("jwt_token")
+	// Extract the Authorization header
+	authorizationHeader := c.Get("Authorization")
 
-	// If no token in cookies, proceed to the next middleware or route handler
-	if tokenString == "" {
+	// Check if the Authorization header is present and has the Bearer prefix
+	if authorizationHeader == "" || !strings.HasPrefix(authorizationHeader, "Bearer ") {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
-			"error": "unauthorized",
+			"error": "Invalid or missing Authorization header",
 		})
 	}
 
-	// If no token in cookies, proceed to the next middleware or route handler
-	if tokenString == "" {
-		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
-			"error": "unauthorized",
-		})
-	}
+	tokenString := strings.Replace(authorizationHeader, "Bearer ", "", 1)
+
+	fmt.Println("Authorization header :", tokenString)
 
 	// Decrypt the JWT token and extract the custom data
 	data, err := decryptJWTToken(tokenString)

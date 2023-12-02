@@ -21,7 +21,7 @@
       <!-- <button mat-menu-item [routerLink]="['/home']">Home</button> -->
       <button mat-menu-item >{{user}}</button>
       <button mat-menu-item *ngIf="user != 'guest'" (click)="logout()">Logout</button>
-      <button mat-menu-item *ngIf="user == 'guest'">Login</button>
+      <button mat-menu-item *ngIf="user == 'guest'" (click)="loginWithGithub()">Login</button>
     </mat-menu>
 
     <button

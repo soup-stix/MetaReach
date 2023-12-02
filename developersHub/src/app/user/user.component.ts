@@ -77,7 +77,7 @@ export class UserComponent {
       console.log("user currently: ",this.user);
     });
 
-  //login with jwt
+  // login with jwt
   this.http.get<any>(environment.apiUrl+"auth/login", httpOptions).subscribe({
       next: data => {
         console.log("logged in as: ", data, data.token.access_token);
@@ -93,7 +93,7 @@ export class UserComponent {
         console.log('There was an error!', error);
       }
     })
-
+    console.log('after login');
     this.githubToken = this.cache.getData() ? this.cache.getData().token : environment.token;
     this.loggedIn = this.cache.getData() ? this.cache.getData().username : 'guest';
     this._snackBar.open("Signed In as "+this.loggedIn, "ok");
@@ -102,7 +102,7 @@ export class UserComponent {
 
     this.http.get<any>("https://api.github.com/users/"+this.user,{
       // "headers": { 'Authorization': 'Bearer '+"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"}
-      "headers": { 'Authorization': 'Bearer '+this.githubToken}
+      // "headers": { 'Authorization': 'Bearer '+"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"}
     }).subscribe({
       next: data => {
           this.userData = data;
@@ -115,7 +115,7 @@ export class UserComponent {
 
     this.http.get<any>("https://api.github.com/users/"+this.user+"/repos?per_page=100",{
       // "headers": { 'Authorization': 'Bearer '+"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"}
-      "headers": { 'Authorization': 'Bearer '+this.githubToken}
+      // "headers": { 'Authorization': 'Bearer '+"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"}
     }).subscribe({
       next: data => {
           this.repos = data;

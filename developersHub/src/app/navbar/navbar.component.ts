@@ -3,6 +3,7 @@ import { ShareableComponent } from '../shareable/shareable.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CacheService } from '../shared/cacheService';
 import { Router } from '@angular/router';
+import { AuthService } from '../service/auth-service.service';
 
 @Component({
   selector: 'app-navbar',
@@ -12,7 +13,7 @@ import { Router } from '@angular/router';
 export class NavbarComponent {
   user: string = this.cache.getData() ? this.cache.getData().username : "guest";
 
-  constructor(private router: Router, private cache:CacheService,private modalService: NgbModal) {}
+  constructor(private authService: AuthService, private router: Router, private cache:CacheService,private modalService: NgbModal) {}
 
   OnInit() {
     if (this.cache.getData()){
@@ -20,6 +21,10 @@ export class NavbarComponent {
       this.user = this.cache.getData().username;
     }
   }
+
+  loginWithGithub(): void {
+		window.location.href = this.authService.getGithubLoginUrl();
+	  }
 
   logout(){
     this.cache.clearAllData();

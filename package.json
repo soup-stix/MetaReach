@@ -1,8 +1,0 @@
-{
-  "dependencies": {
-    "@datorama/akita": "^8.0.1",
-    "@datorama/akita-ngdevtools": "^7.0.0",
-    "@ngrx/store": "^16.2.0",
-    "crypto-js": "^4.1.1"
-  }
-}
